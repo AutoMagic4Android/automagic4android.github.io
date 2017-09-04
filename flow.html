@@ -15,6 +15,21 @@
 	  <!--[if lt IE 9]>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
 	  <![endif]-->
+	  <style type="text/css">
+	  table {
+			counter-reset: rowNumber;
+		}
+
+		table tr {
+			counter-increment: rowNumber;
+		}
+
+		table tr td:first-child::before {
+			content: counter(rowNumber);
+			min-width: 1em;
+			margin-right: 0.5em;
+		}
+	</style>
 	</head>
 	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
 		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
@@ -72,7 +87,8 @@
 				$(flow).find('trigger').each(function(){
 					_row = $("<tr />");
 		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
-		            //_row.append("<td>"+$(this).find("group").text()+"</td>"); type
+		            console.log($(this));
+		            _row.append("<td>"+this.getAttribute("type")+"</td>");//["attributes"]["type"]+"</td>");
 		            _row.append("<td>"+$(this).find("name").text()+"</td>");
 		            _row.append("<td>"+$(this).find("method").text()+"</td>");
 		            _row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
