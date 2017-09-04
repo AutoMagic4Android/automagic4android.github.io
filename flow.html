@@ -17,25 +17,68 @@
 	  <![endif]-->
 	</head>
 	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
-		<h1>AutoMagic Flow Info</h1>
+		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
+		<!--h1>Flow Info</h1-->
 		<h3 id="loading">Loading...</h3>
-		 <table id="result" border="1">
+		<h2>Flows</h2>
+		<table id="flows" border="1">
 			<tr>
-				<th>Name</th>
-				<th>Group</th>
 				<th>Enabled</th>
+				<th>Group</th>
+				<th>Name</th>
 				<th>Execution Policy</th>
+			</tr>
+		</table><br><br>
+		<h2>Triggers</h2>
+		<table id="triggers" border="1">
+			<tr>
+				<th>Enabled</th>
+				<th>Type</th>
+				<th>Name</th>
+				<th>Method</th>
+				<th>Package Name Filter</th>
+				<th>Class Name Filter</th>
+				<th>Use Default Name</th>
+			</tr>
+		</table> 
+		<h2>Conditions</h2>
+		<table id="conditions" border="1">
+			<tr>
+				<th>Type</th>
+				<th>Name</th>
+				<th>Expression</th>
+				<th>Use Default Name</th>
+			</tr>
+		</table>
+		<h2>Actions</h2>
+		<table id="actions" border="1">
+			<tr>
+				<th>Type</th>
+				<th>Name</th>
 			</tr>
 		</table> 
 		<script type="text/javascript">
 			function parseInfo(flow) {
 				$(flow).find('flow').each(function(){
 					_row = $("<tr />");
-		            _row.append("<td>"+$(this).find("name").text()+"</td>");
-		            _row.append("<td>"+$(this).find("group").text()+"</td>");
 		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
+		            _row.append("<td>"+$(this).find("group").text()+"</td>");
+		            _row.append("<td>"+$(this).find("name").text()+"</td>");
 		            _row.append("<td>"+$(this).find("executionPolicy").text()+"</td>");
 		            $("#result").append(_row);
+				});
+			}
+			function parseTriggers(flow) {
+				$(flow).find('trigger').each(function(){
+					_row = $("<tr />");
+		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
+		            //_row.append("<td>"+$(this).find("group").text()+"</td>"); type
+		            _row.append("<td>"+$(this).find("name").text()+"</td>");
+		            _row.append("<td>"+$(this).find("method").text()+"</td>");
+		            _row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
+		            _row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
+		            _row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
+		            $("#triggers").append(_row);
 				});
 			}
 			$(document).ready(function () {
@@ -45,10 +88,10 @@
 				    cache: false,
 				    dataType: "xml",
 				    success: function(flow) {
-				    	$("#loading").text("Finished");
 				    	console.log(flow);
+				    	console.log('---')
 				        parseInfo(flow);
-				    	$("#loading").remove();
+				    	$("#loading").text("Created with AutoMagic For Android v"+flow.documentElement.getAttribute("version"));
 				    }
 				});
 			});
