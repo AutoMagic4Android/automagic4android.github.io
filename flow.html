@@ -1,55 +1,112 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+	  <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>AutoMagic4Android</title>
-  <meta name="description" content="Auto Magic For Android">
-  <meta name="author" content="Bluscream">
+	  <title>AutoMagic4Android</title>
+	  <meta name="description" content="Auto Magic For Android">
+	  <meta name="author" content="Bluscream">
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
-  <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-  <![endif]-->
-
-  <style>
-    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-    .string { color: green; }
-    .number { color: darkorange; }
-    .boolean { color: blue; }
-    .null { color: magenta; }
-    .key { color: red; }
-  </style>
-</head>
-
-	<body linkifying="true">
-		<h1>Flow Overview</h1><br>
-    <h2 id="flow_name"></h2>
+	  <!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+	  <![endif]-->
+	</head>
+	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
+		<h1>AutoMagic Flow Info</h1>
 		<h3 id="loading">Loading...</h3>
-		<div id="result"></div>
+		 <table id="result" border="1">
+			<tr>
+				<th>Name</th>
+				<th>Group</th>
+				<th>Enabled</th>
+				<th>Execution Policy</th>
+			</tr>
+		</table> 
 		<script type="text/javascript">
-			$.ajax({
+			function parseInfo(flow) {
+				$(flow).find('flow').each(function(){
+					_row = $("<tr />");
+		            _row.append("<td>"+$(this).find("name").text()+"</td>");
+		            _row.append("<td>"+$(this).find("group").text()+"</td>");
+		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
+		            _row.append("<td>"+$(this).find("executionPolicy").text()+"</td>");
+		            $("#result").append(_row);
+				});
+			}
+			$(document).ready(function () {
+				$.ajax({
+				    type: "GET",
+				    url: "https://cors-anywhere.herokuapp.com/"+window["location"]["href"].split(/#(.+)/)[1],
+				    cache: false,
+				    dataType: "xml",
+				    success: function(flow) {
+				    	$("#loading").text("Finished");
+				    	console.log(flow);
+				        parseInfo(flow);
+				    	$("#loading").remove();
+				    }
+				});
+			});
+			/*function loadDoc() {
+			  var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				myFunction(this);
+				}
+			  };
+			  xhttp.open("GET", "https://cors-anywhere.herokuapp.com/"+window["location"]["href"].split(/#(.+)/)[1], true);
+			  xhttp.send();
+			}
+			function myFunction(xml) {
+			  var i;
+			  document.getElementById("result").innerHTML = xml.responseText
+			  var xmlDoc = xml.responseXML;
+			  var table="<tr><th>Title</th><th>Artist</th></tr>";
+			  var x = xmlDoc.getElementsByTagName("CD");
+			  for (i = 0; i <x.length; i++) {
+				table += "<tr><td>" +
+				x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+				"</td><td>" +
+				x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
+				"</td></tr>";
+			  }
+			  document.getElementById("result").innerHTML = table;
+			  
+			}
+			loadDoc()*/
+			/*$.ajax({
 				type: "get",
 				url: "https://cors-anywhere.herokuapp.com/" + window["location"]["href"].split(/#(.+)/)[1],
 				dataType: "xml",
-				/*beforeSend: function(request) {
-					request.setRequestHeader("Origin", "https://automagic4android.com");
-				},*/
 				success: function(data) {
-					var element = document.getElementById("loading");
-					element.parentNode.removeChild(element);
+					$("#loading").remove();
 					console.log(data);
 					console.log("Finished loading flow...");
-					$("#result").html(data);
+					//flow = $.parseXML(data);
+					if (window.DOMParser)
+					{
+						parser = new DOMParser();
+						xmlDoc = parser.parseFromString(data, "text/xml");
+					}
+					else // Internet Explorer
+					{
+						xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+						xmlDoc.async = false;
+						xmlDoc.loadXML(data);
+					}
+					xmlDoc = data;
+					console.log(flow)
+					$("#result").html(flow["flow"]["name"]);
 				},
 				error: function(xhr, status) {
-					$("#result").html(status);
+					$("#loading").html(status);
 				}
-			});
+			});*/
 		</script>
 	</body>
 </html>
