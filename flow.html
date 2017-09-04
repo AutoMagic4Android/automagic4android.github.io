@@ -5,7 +5,7 @@
   <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <title>AutoMagic4Android</title>
   <meta name="description" content="Auto Magic For Android">
   <meta name="author" content="Bluscream">
@@ -15,7 +15,7 @@
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
-  
+
   <style>
     pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
     .string { color: green; }
@@ -82,7 +82,7 @@
         url: "https://cors-anywhere.herokuapp.com/" + getUrlParameter('url'),
         dataType: "xml",
         success: function(data) {
-            document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(data);
+            //document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(data);
             var element = document.getElementById("loading");
             element.parentNode.removeChild(element);
             console.log("Finished loading apps...");
