@@ -15,21 +15,6 @@
 	  <!--[if lt IE 9]>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
 	  <![endif]-->
-	  <style type="text/css">
-	  table {
-			counter-reset: rowNumber;
-		}
-
-		table tr {
-			counter-increment: rowNumber;
-		}
-
-		table tr td:first-child::before {
-			content: counter(rowNumber);
-			min-width: 1em;
-			margin-right: 0.5em;
-		}
-	</style>
 	</head>
 	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
 		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
@@ -38,6 +23,7 @@
 		<h2>Flows</h2>
 		<table id="flows" border="1">
 			<tr>
+				<th>#</th>
 				<th>Enabled</th>
 				<th>Group</th>
 				<th>Name</th>
@@ -47,6 +33,7 @@
 		<h2>Triggers</h2>
 		<table id="triggers" border="1">
 			<tr>
+				<th>#</th>
 				<th>Enabled</th>
 				<th>Type</th>
 				<th>Name</th>
@@ -59,6 +46,7 @@
 		<h2>Conditions</h2>
 		<table id="conditions" border="1">
 			<tr>
+				<th>#</th>
 				<th>Type</th>
 				<th>Name</th>
 				<th>Expression</th>
@@ -68,33 +56,63 @@
 		<h2>Actions</h2>
 		<table id="actions" border="1">
 			<tr>
+				<th>#</th>
 				<th>Type</th>
 				<th>Name</th>
 			</tr>
 		</table><br>
 		<script type="text/javascript">
 			function parseInfo(flow) {
+				i = 1;
 				$(flow).find('flow').each(function(){
 					_row = $("<tr />");
+					_row.append("<td>"+i+"</td>");
 		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
 		            _row.append("<td>"+$(this).find("group").text()+"</td>");
 		            _row.append("<td>"+$(this).find("name").text()+"</td>");
 		            _row.append("<td>"+$(this).find("executionPolicy").text()+"</td>");
 		            $("#flows").append(_row);
+		            i += 1;
 				});
 			}
 			function parseTriggers(flow) {
+				i = 1;
 				$(flow).find('trigger').each(function(){
 					_row = $("<tr />");
+					_row.append("<td>"+i+"</td>");
 		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
-		            console.log($(this));
-		            _row.append("<td>"+this.getAttribute("type")+"</td>");//["attributes"]["type"]+"</td>");
+		            _row.append("<td>"+this.getAttribute("type")+"</td>");
 		            _row.append("<td>"+$(this).find("name").text()+"</td>");
 		            _row.append("<td>"+$(this).find("method").text()+"</td>");
 		            _row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
 		            _row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
 		            _row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
 		            $("#triggers").append(_row);
+		            i += 1;
+				});
+			}
+			function parseConditions(flow) {
+				i = 1;
+				$(flow).find('condition').each(function(){
+					_row = $("<tr />");
+					_row.append("<td>"+i+"</td>");
+		            _row.append("<td>"+this.getAttribute("type")+"</td>");
+		            _row.append("<td>"+$(this).find("name").text()+"</td>");
+		            _row.append("<td>"+$(this).find("expression").text()+"</td>");
+		            _row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
+		            $("#conditions").append(_row);
+		            i += 1;
+				});
+			}
+			function parseActions(flow) {
+				i = 1;
+				$(flow).find('action').each(function(){
+					_row = $("<tr />");
+					_row.append("<td>"+i+"</td>");
+		            _row.append("<td>"+this.getAttribute("type")+"</td>");
+		            _row.append("<td>"+$(this).find("name").text()+"</td>");
+		            $("#actions").append(_row);
+		            i += 1;
 				});
 			}
 			$(document).ready(function () {
@@ -108,65 +126,12 @@
 				    	console.log('---')
 				        parseInfo(flow);
 				        parseTriggers(flow);
+				        parseConditions(flow);
+				        parseActions(flow);
 				    	$("#loading").text("Created with AutoMagic For Android v"+flow.documentElement.getAttribute("version"));
 				    }
 				});
 			});
-			/*function loadDoc() {
-			  var xhttp = new XMLHttpRequest();
-			  xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-				myFunction(this);
-				}
-			  };
-			  xhttp.open("GET", "https://cors-anywhere.herokuapp.com/"+window["location"]["href"].split(/#(.+)/)[1], true);
-			  xhttp.send();
-			}
-			function myFunction(xml) {
-			  var i;
-			  document.getElementById("result").innerHTML = xml.responseText
-			  var xmlDoc = xml.responseXML;
-			  var table="<tr><th>Title</th><th>Artist</th></tr>";
-			  var x = xmlDoc.getElementsByTagName("CD");
-			  for (i = 0; i <x.length; i++) {
-				table += "<tr><td>" +
-				x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
-				"</td><td>" +
-				x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
-				"</td></tr>";
-			  }
-			  document.getElementById("result").innerHTML = table;
-			  
-			}
-			loadDoc()*/
-			/*$.ajax({
-				type: "get",
-				url: "https://cors-anywhere.herokuapp.com/" + window["location"]["href"].split(/#(.+)/)[1],
-				dataType: "xml",
-				success: function(data) {
-					$("#loading").remove();
-					console.log(data);
-					console.log("Finished loading flow...");
-					//flow = $.parseXML(data);
-					if (window.DOMParser)
-					{
-						parser = new DOMParser();
-						xmlDoc = parser.parseFromString(data, "text/xml");
-					}
-					else // Internet Explorer
-					{
-						xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-						xmlDoc.async = false;
-						xmlDoc.loadXML(data);
-					}
-					xmlDoc = data;
-					console.log(flow)
-					$("#result").html(flow["flow"]["name"]);
-				},
-				error: function(xhr, status) {
-					$("#loading").html(status);
-				}
-			});*/
 		</script>
 	</body>
 </html>
