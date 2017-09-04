@@ -3,19 +3,95 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title>AutoMagic4Android</title>
   <meta name="description" content="Auto Magic For Android">
   <meta name="author" content="Bluscream">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
+  
+  <style>
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+    .string { color: green; }
+    .number { color: darkorange; }
+    .boolean { color: blue; }
+    .null { color: magenta; }
+    .key { color: red; }
+  </style>
 </head>
 
-<body>
-  <script src="js/scripts.js"></script>
-</body>
+	<body linkifying="true">
+		<h1>Flow Overview</h1><br>
+    <h2 id="flow_name"></h2>
+		<h3 id="loading">Loading...</h3>
+		<div id="result"></div>
+		<script type="text/javascript">
+			var getUrlParameter = function getUrlParameter(sParam) {
+			  var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+				sURLVariables = sPageURL.split('&'),
+				sParameterName,
+				i;
+			  for (i = 0; i < sURLVariables.length; i++) {
+				  sParameterName = sURLVariables[i].split('=');
+				  if (sParameterName[0] === sParam) {
+				      return sParameterName[1] === undefined ? true : sParameterName[1];
+				  }
+			  }
+			};
+			function syntaxHighlight(json) {
+			    if (typeof json != 'string') {
+				 json = JSON.stringify(json, undefined, 2);
+			    }
+			    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+				if(getUrlParameter('syntax')) {
+					var cls = 'number';
+					if (/^"/.test(match)) {
+					    if (/:$/.test(match)) {
+						cls = 'key';
+					    } else {
+						cls = 'string';
+					    }
+					} else if (/true|false/.test(match)) {
+					    cls = 'boolean';
+					} else if (/null/.test(match)) {
+					    cls = 'null';
+					}
+					isURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/.test(match)
+					if( isURL && (/\.(gif|jpg|jpeg|tiff|png)"$/i).test(match) && getUrlParameter('images')) {
+						return '<a href="' + match.replace('"','') + '">' + match + '</a> <img src="'+match.replace('"','')+'" height="16" width="16"/>'
+					}
+					else if (isURL){
+						return '<a href="' + match.replace('"','') + '">' + match + '</a>';
+					}
+					return '<span class="' + cls + '">' + match + '</span>';
+				} else { return match; }
+			    });
+			}
+			$.getJSON( "https://crossorigin.me/http://apps.overwolf.com/prod/OWStoreExtentions.json", function( data ) {
+
+			});
+      $.ajax({
+        type: "get",
+        url: "https://cors-anywhere.herokuapp.com/" + getUrlParameter('url'),
+        dataType: "xml",
+        success: function(data) {
+            document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(data);
+            var element = document.getElementById("loading");
+            element.parentNode.removeChild(element);
+            console.log("Finished loading apps...");
+            $("#result").html(data);
+        },
+        error: function(xhr, status) {
+            $("#result").html(status);
+        }
+    });
+		</script>
+	</body>
 </html>
