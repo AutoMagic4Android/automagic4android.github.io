@@ -21,9 +21,14 @@
 	</head>
 	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
 		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
-		<!--h1>Flow Info</h1-->
+		<h1>Flow Info</h1>
+		<div id="start">
+		  Flow raw URL:&nbsp;
+		  <input type='text' id='flow_url' value=''>&nbsp;
+		  <input type='submit' value='Load' onclick="window.location.href =+ window.location.href.split(/?(.+)/)[0] += '?'+$('#flow_url').val();">
+		<div/>
 		<h3 id="loading" class="hidden">Loading...</h3>
-		<div class="hidden">
+		<div id="flow" class="hidden">
 			<h2>Flows</h2>
 			<table id="flows" border="1">
 				<tr>
@@ -67,6 +72,9 @@
 			</table><br>
 		</div>
 		<script type="text/javascript">
+			function parseURLInput() {
+				return 
+			}
 			function parseInfo(flow) {
 				i = 1;
 				$(flow).find('flow').each(function(){
@@ -120,10 +128,27 @@
 		            i += 1;
 				});
 			}
+			function parseURL(url) {
+				if url.contains("?") {
+					flow_url = url.split(/?(.+)/)[1];
+					var pattern = new RegExp('^(https?:\/\/)?'+
+						'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+
+						'((\d{1,3}\.){3}\d{1,3}))'+
+						'(\:\d+)?(\/[-a-z\d%_.~+]*)*'+
+						'(\?[;&a-z\d%_.~+=-]*)?'+
+						'(\#[-a-z\d_]*)?$','i');
+					if(pattern.test(flow_url)) {
+					return flow_url;
+					}
+				}
+				return false;
+			}
 			$(document).ready(function () {
+				url = parseURL(window.location.href)
+				if url == false { return; }
 				$.ajax({
 				    type: "GET",
-				    url: "https://cors-anywhere.herokuapp.com/"+window["location"]["href"].split(/#(.+)/)[1],
+				    url: "https://cors-anywhere.herokuapp.com/"+url,
 				    cache: false,
 				    dataType: "xml",
 				    success: function(flow) {
