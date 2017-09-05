@@ -19,7 +19,7 @@
 			.hidden { display:none; }
 		</style>
 		<script type="text/javascript">
-			window.currenturl = window.location.protocol+'//'+window.location.host+'/'+window.location.pathname;
+			window.currenturl = window.location.protocol+'//'+window.location.host+window.location.pathname;
 			console.log('window.currenturl:'+window.currenturl)
 			function handleFileSelect() {               
 				if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
