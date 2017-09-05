@@ -30,8 +30,35 @@
 		  <input type='text' id='flow_url' style="width:500px" value=''>&nbsp;
 		  <input type='submit' value='Load' onclick="loadFlow($('#flow_url').val());window.location.href+='#'+$('#flow_url').val()">
 		  <br><br>Load flow local file:&nbsp;
-		  <input id="flow_file" type="file" size="50" accept="application/xml">&nbsp;
-		  <input type='submit' value='Load' onclick="loadFlow($('#flow_file').val());window.location.href=window.location.protocol+'//'+window.location.host+'/'+window.location.pathname'#'+$('#flow_file').val()">
+		  <input id="flow_file" type="file" accept="application/xml">&nbsp;
+		  <!--input type='submit' value='Load' onclick="loadFlow($('#flow_file').val());window.location.href=window.location.protocol+'//'+window.location.host+'/'+window.location.pathname+'#'+$('#flow_file').val()"-->
+		  <script type="text/css">
+			  function handleFileSelect(evt) {
+			  	console.log("test");
+				var files = evt.target.files; // FileList object
+				// Loop through the FileList and render image files as thumbnails.
+				for (var i = 0, f; f = files[i]; i++) {
+				  // Only process image files.
+				  if (!f.type.match('image.*')) {
+					continue;
+				  }
+				  var reader = new FileReader();
+				  // Closure to capture the file information.
+				  reader.onload = (function(theFile) {
+					return function(e) {
+					  // Render thumbnail.
+					  var span = document.createElement('span');
+					  span.innerHTML = ['<img class="thumb" src="', e.target.result,
+						                '" title="', escape(theFile.name), '"/>'].join('');
+					  document.getElementById('list').insertBefore(span, null);
+					};
+				  })(f);
+				  // Read in the image file as a data URL.
+				  reader.readAsDataURL(f);
+				}
+			  }
+			  document.getElementById('flow_file').addEventListener('change', handleFileSelect, false);
+		</script>
 		</div>
 		<h3 id="loading" class="hidden">Loading...</h3>
 		<div id="flow" class="hidden">
@@ -170,7 +197,6 @@
 			}
 			$(document).ready(function () {
 				url = parseURL(window.location.href)
-				console.log(url)
 				if (url == false) { return; }
 				loadFlow(url[1]);
 				// https://raw.githubusercontent.com/Bluscream/AutoMagicFlows/master/flow_New_activity.xml
