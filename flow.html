@@ -19,92 +19,19 @@
 			.hidden { display:none; }
 		</style>
 		<script type="text/javascript">
-			var parseURLinput = function() { }
-		</script>
-	</head>
-	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
-		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
-		<h1>AutoMagic Flow Info</h1>
-		<div id="start">
-		  Load flow from URL:&nbsp;
-		  <input type='text' id='flow_url' style="width:500px" value=''>&nbsp;
-		  <input type='submit' value='Load' onclick="loadFlow($('#flow_url').val());window.location.href+='#'+$('#flow_url').val()">
-		  <br><br>Load flow local file:&nbsp;
-		  <input id="flow_file" type="file" accept="application/xml">&nbsp;
-		  <!--input type='submit' value='Load' onclick="loadFlow($('#flow_file').val());window.location.href=window.location.protocol+'//'+window.location.host+'/'+window.location.pathname+'#'+$('#flow_file').val()"-->
-		  <script type="text/css">
-			  function handleFileSelect(evt) {
-			  	console.log("test");
-				var files = evt.target.files; // FileList object
-				// Loop through the FileList and render image files as thumbnails.
-				for (var i = 0, f; f = files[i]; i++) {
-				  // Only process image files.
-				  if (!f.type.match('image.*')) {
-					continue;
-				  }
-				  var reader = new FileReader();
-				  // Closure to capture the file information.
-				  reader.onload = (function(theFile) {
-					return function(e) {
-					  // Render thumbnail.
-					  var span = document.createElement('span');
-					  span.innerHTML = ['<img class="thumb" src="', e.target.result,
-						                '" title="', escape(theFile.name), '"/>'].join('');
-					  document.getElementById('list').insertBefore(span, null);
-					};
-				  })(f);
-				  // Read in the image file as a data URL.
-				  reader.readAsDataURL(f);
+			function handleFileSelect() {               
+				if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+				  alert('The File APIs are not fully supported in this browser.'); return;
 				}
-			  }
-			  document.getElementById('flow_file').addEventListener('change', handleFileSelect, false);
-		</script>
-		</div>
-		<h3 id="loading" class="hidden">Loading...</h3>
-		<div id="flow" class="hidden">
-			<h2>Flows</h2>
-			<table id="flows" border="1">
-				<tr>
-					<th>#</th>
-					<th>Enabled</th>
-					<th>Group</th>
-					<th>Name</th>
-					<th>Execution Policy</th>
-				</tr>
-			</table><br>
-			<h2>Triggers</h2>
-			<table id="triggers" border="1">
-				<tr>
-					<th>#</th>
-					<th>Enabled</th>
-					<th>Type</th>
-					<th>Name</th>
-					<th>Method</th>
-					<th>Package Name Filter</th>
-					<th>Class Name Filter</th>
-					<th>Use Default Name</th>
-				</tr>
-			</table><br>
-			<h2>Conditions</h2>
-			<table id="conditions" border="1">
-				<tr>
-					<th>#</th>
-					<th>Type</th>
-					<th>Name</th>
-					<th>Expression</th>
-					<th>Use Default Name</th>
-				</tr>
-			</table><br>
-			<h2>Actions</h2>
-			<table id="actions" border="1">
-				<tr>
-					<th>#</th>
-					<th>Type</th>
-					<th>Name</th>
-				</tr>
-			</table><br>
-		</div>
-		<script type="text/javascript">
+				input = document.getElementById('flow_file');
+				file = input.files[0];
+				fr = new FileReader();
+				fr.onload = receivedText;
+				fr.readAsText(file);
+			}
+			function receivedText() {
+				parseFlow($.parseXML(fr.result));
+			}
 			function parseInfo(flow) {
 				i = 1;
 				$(flow).find('flow').each(function(){
@@ -174,6 +101,17 @@
 				}
 				return false;
 			}
+			function parseFlow(flow) {
+		    	$("#loading").removeClass("hidden");
+		    	$('table>tr').not(':first').remove();
+		    	$('#start').addClass("hidden");
+		    	$('#flow').removeClass("hidden");
+		        parseInfo(flow);
+		        parseTriggers(flow);
+		        parseConditions(flow);
+		        parseActions(flow);
+		    	$("#loading").text("Created with AutoMagic For Android v"+flow.documentElement.getAttribute("version"));
+		    }
 			function loadFlow(url) {
 				$.ajax({
 				    type: "GET",
@@ -181,25 +119,73 @@
 				    cache: false,
 				    dataType: "xml",
 				    success: function(flow) {
-				    	$("#loading").removeClass("hidden")
 				    	console.log(flow);
-				    	console.log('---')
-				    	$('table>tr').not(':first').remove();
-				    	$('#start').addClass("hidden");
-				    	$('#flow').removeClass("hidden");
-				        parseInfo(flow);
-				        parseTriggers(flow);
-				        parseConditions(flow);
-				        parseActions(flow);
-				    	$("#loading").text("Created with AutoMagic For Android v"+flow.documentElement.getAttribute("version"));
+				    	parseFlow(flow);
 				    }
 				});
 			}
+		</script>
+	</head>
+	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
+		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
+		<h1>AutoMagic Flow Info</h1>
+		<div id="start">
+		  Load flow from URL:&nbsp;
+		  <input type='text' id='flow_url' style="width:500px" value=''>&nbsp;
+		  <input type='submit' value='Load' onclick="loadFlow($('#flow_url').val());window.location.href+='#'+$('#flow_url').val()">
+		  <br><br>Load flow local file:&nbsp;
+		  <input id="flow_file" type="file" accept="application/xml">&nbsp;
+		  <input type='submit' value='Load' onclick="handleFileSelect();">
+		</div>
+		<h3 id="loading" class="hidden">Loading...</h3>
+		<div id="flow" class="hidden">
+			<h2>Flows</h2>
+			<table id="flows" border="1">
+				<tr>
+					<th>#</th>
+					<th>Enabled</th>
+					<th>Group</th>
+					<th>Name</th>
+					<th>Execution Policy</th>
+				</tr>
+			</table><br>
+			<h2>Triggers</h2>
+			<table id="triggers" border="1">
+				<tr>
+					<th>#</th>
+					<th>Enabled</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Method</th>
+					<th>Package Name Filter</th>
+					<th>Class Name Filter</th>
+					<th>Use Default Name</th>
+				</tr>
+			</table><br>
+			<h2>Conditions</h2>
+			<table id="conditions" border="1">
+				<tr>
+					<th>#</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Expression</th>
+					<th>Use Default Name</th>
+				</tr>
+			</table><br>
+			<h2>Actions</h2>
+			<table id="actions" border="1">
+				<tr>
+					<th>#</th>
+					<th>Type</th>
+					<th>Name</th>
+				</tr>
+			</table><br>
+		</div>
+		<script type="text/javascript">
 			$(document).ready(function () {
 				url = parseURL(window.location.href)
 				if (url == false) { return; }
 				loadFlow(url[1]);
-				// https://raw.githubusercontent.com/Bluscream/AutoMagicFlows/master/flow_New_activity.xml
 			});
 		</script>
 	</body>
