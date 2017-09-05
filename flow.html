@@ -2,65 +2,70 @@
 
 <html lang="en">
 	<head>
-	  <meta charset="utf-8">
+		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	  <title>AutoMagic4Android</title>
-	  <meta name="description" content="Auto Magic For Android">
-	  <meta name="author" content="Bluscream">
+		<title>AutoMagic4Android</title>
+		<meta name="description" content="Auto Magic For Android">
+		<meta name="author" content="Bluscream">
 
-	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
-	  <!--[if lt IE 9]>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-	  <![endif]-->
+		<!--[if lt IE 9]>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+		<![endif]-->
+		<style type="text/css">
+			.hidden { display:none; }
+		</style>
 	</head>
 	<body linkifying="true" style="color:#999999;background-color:#3b3b3b">
 		<img align="right" src="https://automagic4android.com/images/automagic_title_587.png"/>
 		<!--h1>Flow Info</h1-->
-		<h3 id="loading">Loading...</h3>
-		<h2>Flows</h2>
-		<table id="flows" border="1">
-			<tr>
-				<th>#</th>
-				<th>Enabled</th>
-				<th>Group</th>
-				<th>Name</th>
-				<th>Execution Policy</th>
-			</tr>
-		</table><br>
-		<h2>Triggers</h2>
-		<table id="triggers" border="1">
-			<tr>
-				<th>#</th>
-				<th>Enabled</th>
-				<th>Type</th>
-				<th>Name</th>
-				<th>Method</th>
-				<th>Package Name Filter</th>
-				<th>Class Name Filter</th>
-				<th>Use Default Name</th>
-			</tr>
-		</table><br>
-		<h2>Conditions</h2>
-		<table id="conditions" border="1">
-			<tr>
-				<th>#</th>
-				<th>Type</th>
-				<th>Name</th>
-				<th>Expression</th>
-				<th>Use Default Name</th>
-			</tr>
-		</table><br>
-		<h2>Actions</h2>
-		<table id="actions" border="1">
-			<tr>
-				<th>#</th>
-				<th>Type</th>
-				<th>Name</th>
-			</tr>
-		</table><br>
+		<h3 id="loading" class="hidden">Loading...</h3>
+		<div class="hidden">
+			<h2>Flows</h2>
+			<table id="flows" border="1">
+				<tr>
+					<th>#</th>
+					<th>Enabled</th>
+					<th>Group</th>
+					<th>Name</th>
+					<th>Execution Policy</th>
+				</tr>
+			</table><br>
+			<h2>Triggers</h2>
+			<table id="triggers" border="1">
+				<tr>
+					<th>#</th>
+					<th>Enabled</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Method</th>
+					<th>Package Name Filter</th>
+					<th>Class Name Filter</th>
+					<th>Use Default Name</th>
+				</tr>
+			</table><br>
+			<h2>Conditions</h2>
+			<table id="conditions" border="1">
+				<tr>
+					<th>#</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Expression</th>
+					<th>Use Default Name</th>
+				</tr>
+			</table><br>
+			<h2>Actions</h2>
+			<table id="actions" border="1">
+				<tr>
+					<th>#</th>
+					<th>Type</th>
+					<th>Name</th>
+				</tr>
+			</table><br>
+		</div>
 		<script type="text/javascript">
 			function parseInfo(flow) {
 				i = 1;
