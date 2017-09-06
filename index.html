@@ -30,8 +30,15 @@
 			$.get("https://myip.addr.space/ip",
 			function(data){
 				console.log(data);
-				_gaq.push(['_setCustomVar', 1, 'UserAddress', data, 1]);
+				_gaq.push(['_setCustomVar', 1, 'User Address', data, 1]);
 			});
+			_gaq.push(['_setCustomVar',
+				2,            	// This custom var is set to slot #1.  Required parameter.
+				'Member Type',  // The name of the custom variable.  Required parameter.
+				'Premium',      // The value of the custom variable.  Required parameter.
+				'Gold',		//  (possible values might be Free, Bronze, Gold, and Platinum)
+				1               // Sets the scope to visitor-level.  Optional parameter.
+			 ]); 
 		</script>
 	</body>
 </html>
