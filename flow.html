@@ -1,4 +1,4 @@
-<!--DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
 	<head>
 		<base href="https://automagic4android.com/en/" />
@@ -60,7 +60,7 @@
 			function parseTriggers(flow) {
 				i = 1;
 				$(flow).find('trigger').each(function(){
-					if $(this).find("enabled").text() != "null"{
+					if (this.getAttribute("type") != "null"){
 					_row = $("<tr />");
 					_row.append("<td>"+i+"</td>");
 					_row.append("<td>"+$(this).find("enabled").text()+"</td>");
