@@ -60,18 +60,18 @@
 			function parseTriggers(flow) {
 				i = 1;
 				$(flow).find('trigger').each(function(){
-					if (this.getAttribute("type") != "null"){
-					_row = $("<tr />");
-					_row.append("<td>"+i+"</td>");
-					_row.append("<td>"+$(this).find("enabled").text()+"</td>");
-					_row.append("<td>"+this.getAttribute("type")+"</td>");
-					_row.append("<td>"+$(this).find("name").text()+"</td>");
-					_row.append("<td>"+$(this).find("method").text()+"</td>");
-					_row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
-					_row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
-					_row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
-					$("#triggers").append(_row);
-					i += 1;
+					if (this.getAttribute("type") != null){
+						_row = $("<tr />");
+						_row.append("<td>"+i+"</td>");
+						_row.append("<td>"+$(this).find("enabled").text()+"</td>");
+						_row.append("<td>"+this.getAttribute("type")+"</td>");
+						_row.append("<td>"+$(this).find("name").text()+"</td>");
+						_row.append("<td>"+$(this).find("method").text()+"</td>");
+						_row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
+						_row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
+						_row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
+						$("#triggers").append(_row);
+						i += 1;
 					}
 				});
 			}
