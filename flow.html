@@ -60,7 +60,7 @@
 			function parseTriggers(flow) {
 				i = 1;
 				$(flow).find('trigger').each(function(){
-					if (this.getAttribute("type") != "null"){
+					if (this.getAttribute("type") != null){
 						_row = $("<tr />");
 						_row.append("<td>"+i+"</td>");
 						_row.append("<td>"+$(this).find("enabled").text()+"</td>");
