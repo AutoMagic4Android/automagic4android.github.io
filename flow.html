@@ -91,12 +91,14 @@
 			function parseActions(flow) {
 				i = 1;
 				$(flow).find('action').each(function(){
-					_row = $("<tr />");
-					_row.append("<td>"+i+"</td>");
-					_row.append("<td>"+this.getAttribute("type")+"</td>");
-					_row.append("<td>"+$(this).find("name").text()+"</td>");
-					$("#actions").append(_row);
-		            i += 1;
+					if (this.getAttribute("type") != null){
+						_row = $("<tr />");
+						_row.append("<td>"+i+"</td>");
+						_row.append("<td>"+this.getAttribute("type")+"</td>");
+						_row.append("<td>"+$(this).find("name").text()+"</td>");
+						$("#actions").append(_row);
+		           			i += 1;
+					}
 				});
 			}
 			function parseURL(url) {
