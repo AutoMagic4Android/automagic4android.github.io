@@ -49,28 +49,30 @@
 				$(flow).find('flow').each(function(){
 					_row = $("<tr />");
 					_row.append("<td>"+i+"</td>");
-		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
-		            _row.append("<td>"+$(this).find("group").text()+"</td>");
-		            _row.append("<td>"+$(this).find("name").text()+"</td>");
-		            _row.append("<td>"+$(this).find("executionPolicy").text()+"</td>");
-		            $("#flows").append(_row);
-		            i += 1;
+					_row.append("<td>"+$(this).find("enabled").text()+"</td>");
+					_row.append("<td>"+$(this).find("group").text()+"</td>");
+					_row.append("<td>"+$(this).find("name").text()+"</td>");
+					_row.append("<td>"+$(this).find("executionPolicy").text()+"</td>");
+					$("#flows").append(_row);
+					i += 1;
 				});
 			}
 			function parseTriggers(flow) {
 				i = 1;
 				$(flow).find('trigger').each(function(){
+					if $(this).find("enabled").text() != "null"{
 					_row = $("<tr />");
 					_row.append("<td>"+i+"</td>");
-		            _row.append("<td>"+$(this).find("enabled").text()+"</td>");
-		            _row.append("<td>"+this.getAttribute("type")+"</td>");
-		            _row.append("<td>"+$(this).find("name").text()+"</td>");
-		            _row.append("<td>"+$(this).find("method").text()+"</td>");
-		            _row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
-		            _row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
-		            _row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
-		            $("#triggers").append(_row);
-		            i += 1;
+					_row.append("<td>"+$(this).find("enabled").text()+"</td>");
+					_row.append("<td>"+this.getAttribute("type")+"</td>");
+					_row.append("<td>"+$(this).find("name").text()+"</td>");
+					_row.append("<td>"+$(this).find("method").text()+"</td>");
+					_row.append("<td>"+$(this).find("packageNameFilter").text()+"</td>");
+					_row.append("<td>"+$(this).find("classNameFilter").text()+"</td>");
+					_row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
+					$("#triggers").append(_row);
+					i += 1;
+					}
 				});
 			}
 			function parseConditions(flow) {
@@ -78,12 +80,12 @@
 				$(flow).find('condition').each(function(){
 					_row = $("<tr />");
 					_row.append("<td>"+i+"</td>");
-		            _row.append("<td>"+this.getAttribute("type")+"</td>");
-		            _row.append("<td>"+$(this).find("name").text()+"</td>");
-		            _row.append("<td>"+$(this).find("expression").text()+"</td>");
-		            _row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
-		            $("#conditions").append(_row);
-		            i += 1;
+					_row.append("<td>"+this.getAttribute("type")+"</td>");
+					_row.append("<td>"+$(this).find("name").text()+"</td>");
+					_row.append("<td>"+$(this).find("expression").text()+"</td>");
+					_row.append("<td>"+$(this).find("useDefaultName").text()+"</td>");
+					$("#conditions").append(_row);
+					i += 1;
 				});
 			}
 			function parseActions(flow) {
@@ -91,9 +93,9 @@
 				$(flow).find('action').each(function(){
 					_row = $("<tr />");
 					_row.append("<td>"+i+"</td>");
-		            _row.append("<td>"+this.getAttribute("type")+"</td>");
-		            _row.append("<td>"+$(this).find("name").text()+"</td>");
-		            $("#actions").append(_row);
+					_row.append("<td>"+this.getAttribute("type")+"</td>");
+					_row.append("<td>"+$(this).find("name").text()+"</td>");
+					$("#actions").append(_row);
 		            i += 1;
 				});
 			}
